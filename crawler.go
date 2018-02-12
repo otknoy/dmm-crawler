@@ -11,8 +11,8 @@ import (
 )
 
 func main() {
-	apiid := ""
-	affid := ""
+	apiid := os.Getenv("DMM_API_ID")
+	affid := os.Getenv("DMM_AFFILIATE_ID")
 
 	client := dmm.NewItemSearchClientImpl(apiid, affid)
 
