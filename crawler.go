@@ -2,11 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 
+	"github.com/go-redis/redis"
 	"github.com/otknoy/dmm-crawler/dmm"
 )
 
@@ -14,25 +14,33 @@ func main() {
 	apiid := os.Getenv("DMM_API_ID")
 	affid := os.Getenv("DMM_AFFILIATE_ID")
 
-	client := dmm.NewItemSearchClientImpl(apiid, affid)
+	itemSearchClient := dmm.NewItemSearchClientImpl(apiid, affid)
+	redisClient := redis.NewClient(&redis.Options{
+		Addr: "localhost:6379",
+	})
 
 	keyword := "つぼみ"
 
-	res, err := client.Search(keyword)
+	res, err := itemSearchClient.Search(keyword)
 	if err != nil {
 		log.Print(err)
 	}
 
 	items := res.Result.Items
-	for i, item := range items {
+	for _, item := range items {
 		bytes, err := json.Marshal(item)
 		if err != nil {
 			log.Print(err)
 		}
 
-		filename := "/mnt/temp/dmm/" + fmt.Sprintf("%04d_%s.json", i, keyword)
-		log.Printf("save file: %s", filename)
-		save(filename, bytes)
+		err = redisClient.Publish("item_feed", bytes).Err()
+		if err != nil {
+			panic(err)
+		}
+
+		// filename := "/mnt/temp/dmm/" + fmt.Sprintf("%04d_%s.json", i, keyword)
+		// log.Printf("save file: %s", filename)
+		// save(filename, bytes)
 	}
 }
 

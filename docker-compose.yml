@@ -1,0 +1,15 @@
+version: '2'
+services:
+  # redis:
+  #   image: redis:latest
+  #   volumes:
+  #     - "./data/redis:/data/redis"
+  #   ports:
+  #     - "6379:6379"
+  #   command: redis-server --appendonly yes
+  solr:
+     image: solr:latest
+     volumes:
+       - "./data/solr/cores:/opt/solr/server/solr/mycores"
+     ports:
+      - "8983:8983"
