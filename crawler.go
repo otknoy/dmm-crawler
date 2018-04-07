@@ -39,7 +39,7 @@ func main() {
 			bytes, _ := json.Marshal(item)
 
 			outputDir := "/mnt/temp/dmm/"
-			filename := outputDir + fmt.Sprintf("%04d_%s.json", i, keyword)
+			filename := outputDir + fmt.Sprintf("%s_%04d.json", keyword, i)
 			// log.Printf("success to save file: %s", filename)
 			err := ioutil.WriteFile(filename, bytes, os.ModePerm)
 			if err != nil {
