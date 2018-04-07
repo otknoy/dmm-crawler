@@ -27,7 +27,6 @@ func NewItemSearchClientImpl(dmmAPIID string, dmmAffiliateID string) ItemSearchC
 }
 
 func (c *ItemSearchClientImpl) Search(keyword string) (ItemResponse, error) {
-
 	u := c.buildURL(keyword)
 	log.Print(u.String())
 
