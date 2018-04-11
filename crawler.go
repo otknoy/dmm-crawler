@@ -35,11 +35,11 @@ func main() {
 	for itemResponse := range responses {
 		keyword := itemResponse.Request.Parameters.Keyword
 		log.Println(keyword)
-		for i, item := range itemResponse.Result.Items {
+		for _, item := range itemResponse.Result.Items {
 			bytes, _ := json.Marshal(item)
 
 			outputDir := "/mnt/temp/dmm/"
-			filename := outputDir + fmt.Sprintf("%s_%04d.json", keyword, i)
+			filename := outputDir + fmt.Sprintf("%s.json", item.ContentID)
 			// log.Printf("success to save file: %s", filename)
 			err := ioutil.WriteFile(filename, bytes, os.ModePerm)
 			if err != nil {
