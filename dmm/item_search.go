@@ -6,10 +6,11 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 type ItemSearchClient interface {
-	Search(string) (ItemResponse, error)
+	Search(string, int, int) (ItemResponse, error)
 }
 
 type ItemSearchClientImpl struct {
@@ -26,9 +27,9 @@ func NewItemSearchClientImpl(dmmAPIID string, dmmAffiliateID string) ItemSearchC
 	return c
 }
 
-func (c *ItemSearchClientImpl) Search(keyword string) (ItemResponse, error) {
-	u := c.buildURL(keyword)
-	log.Print(u.String())
+func (c *ItemSearchClientImpl) Search(keyword string, hits int, offset int) (ItemResponse, error) {
+	u := c.buildURL(keyword, hits, offset)
+	log.Println(u.String())
 
 	res, err := http.Get(u.String())
 	if err != nil {
@@ -50,15 +51,15 @@ func (c *ItemSearchClientImpl) Search(keyword string) (ItemResponse, error) {
 	return r, nil
 }
 
-func (c *ItemSearchClientImpl) buildURL(keyword string) *url.URL {
+func (c *ItemSearchClientImpl) buildURL(keyword string, hits int, offset int) *url.URL {
 	q := url.Values{}
 	q.Add("api_id", c.dmmAPIID)
 	q.Add("affiliate_id", c.dmmAffiliateID)
 	q.Add("site", "DMM.R18")
 	q.Add("service", "digital")
 	q.Add("floor", "videoa")
-	q.Add("hits", "100")
-	q.Add("offset", "1")
+	q.Add("hits", strconv.Itoa(hits))
+	q.Add("offset", strconv.Itoa(offset))
 	q.Add("keyword", keyword)
 	q.Add("sort", "date")
 

@@ -23,28 +23,42 @@ func main() {
 	affid := os.Getenv("DMM_AFFILIATE_ID")
 	itemSearchClient := dmm.NewItemSearchClientImpl(apiid, affid)
 
-	responses := make(chan dmm.ItemResponse, 10)
+	responses := make(chan dmm.ItemResponse, 4)
 	go func(keywords []string) {
-		for _, keyword := range actresses {
-			res, _ := itemSearchClient.Search(keyword)
-			responses <- res
+		for _, keyword := range keywords {
+			for i := 0; i < 50000; i++ {
+				res, _ := itemSearchClient.Search(keyword, 100, i*100+1)
+				if res.Result.ResultCount == 0 {
+					break
+				}
+
+				responses <- res
+			}
 		}
 		close(responses)
 	}(actresses)
 
-	for itemResponse := range responses {
-		keyword := itemResponse.Request.Parameters.Keyword
-		log.Println(keyword)
-		for _, item := range itemResponse.Result.Items {
-			bytes, _ := json.Marshal(item)
-
-			outputDir := "/mnt/temp/dmm/"
-			filename := outputDir + fmt.Sprintf("%s.json", item.ContentID)
-			// log.Printf("success to save file: %s", filename)
-			err := ioutil.WriteFile(filename, bytes, os.ModePerm)
-			if err != nil {
-				log.Fatalf("failed to write file: %s", filename)
+	items := make(chan dmm.Item)
+	go func(response <-chan dmm.ItemResponse) {
+		for itemResponse := range responses {
+			keyword := itemResponse.Request.Parameters.Keyword
+			log.Println(keyword)
+			for _, item := range itemResponse.Result.Items {
+				items <- item
 			}
+		}
+		close(items)
+	}(responses)
+
+	for item := range items {
+		bytes, _ := json.Marshal(item)
+
+		outputDir := "/mnt/temp/dmm/"
+		filename := outputDir + fmt.Sprintf("%s.json", item.ContentID)
+		// log.Printf("success to save file: %s", filename)
+		err := ioutil.WriteFile(filename, bytes, os.ModePerm)
+		if err != nil {
+			log.Fatalf("failed to write file: %s", filename)
 		}
 	}
 }
