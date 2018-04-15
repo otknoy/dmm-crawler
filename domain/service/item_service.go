@@ -25,16 +25,8 @@ func (s *itemService) GetItems(keyword string, hits int, offset int) ([]model.It
 	items := []model.Item{}
 	for _, dmmItem := range itemResponse.Result.Items {
 		actresses := parseActress(dmmItem)
-
-		var genres []string
-		for _, genre := range dmmItem.Iteminfo.Genre {
-			genres = append(genres, genre.Name)
-		}
-
-		var makers []string
-		for _, maker := range dmmItem.Iteminfo.Maker {
-			makers = append(makers, maker.Name)
-		}
+		genres := parseGenre(dmmItem)
+		makers := parseMaker(dmmItem)
 
 		item := model.Item{
 			dmmItem.ContentID,
@@ -52,14 +44,28 @@ func (s *itemService) GetItems(keyword string, hits int, offset int) ([]model.It
 }
 
 func parseActress(dmmItem model.DmmItem) []string {
-	actresses := []string{}
-
+	var actresses []string
 	for i, actress := range dmmItem.Iteminfo.Actress {
 		if i%3 != 0 {
 			continue
 		}
 		actresses = append(actresses, actress.Name)
 	}
-
 	return actresses
+}
+
+func parseGenre(dmmItem model.DmmItem) []string {
+	var genres []string
+	for _, genre := range dmmItem.Iteminfo.Genre {
+		genres = append(genres, genre.Name)
+	}
+	return genres
+}
+
+func parseMaker(dmmItem model.DmmItem) []string {
+	var makers []string
+	for _, maker := range dmmItem.Iteminfo.Maker {
+		makers = append(makers, maker.Name)
+	}
+	return makers
 }
