@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/otknoy/dmm-crawler/domain/model"
+	"github.com/otknoy/dmm-crawler/domain/repository"
 	"github.com/otknoy/dmm-crawler/domain/service"
-	"github.com/otknoy/dmm-crawler/infrastructure"
 )
 
 type Crawler struct {
@@ -19,7 +19,7 @@ type Crawler struct {
 func NewCrawler() Crawler {
 	apiid := os.Getenv("DMM_API_ID")
 	affid := os.Getenv("DMM_AFFILIATE_ID")
-	dmmItemRepository := infrastructure.NewDmmItemRepository(apiid, affid)
+	dmmItemRepository := repository.NewDmmItemRepository(apiid, affid)
 
 	itemService := service.NewItemService(dmmItemRepository)
 
