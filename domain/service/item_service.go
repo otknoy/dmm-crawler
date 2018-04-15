@@ -5,17 +5,21 @@ import (
 	"github.com/otknoy/dmm-crawler/domain/repository"
 )
 
-type ItemSearchService struct {
-	itemSearchRepository repository.ItemSearchRepository
+type ItemService interface {
+	GetItems(keyword string, hits int, offset int) ([]model.Item, error)
 }
 
-func NewItemSearchService(itemSearchRepository repository.ItemSearchRepository) ItemSearchService {
-	return ItemSearchService{
-		itemSearchRepository,
+type itemService struct {
+	itemSearchRepository repository.ItemRepository
+}
+
+func NewItemService(itemRepository repository.ItemRepository) ItemService {
+	return &itemService{
+		itemRepository,
 	}
 }
 
-func (s *ItemSearchService) GetItems(keyword string, hits int, offset int) ([]model.Item, error) {
+func (s *itemService) GetItems(keyword string, hits int, offset int) ([]model.Item, error) {
 	itemResponse, _ := s.itemSearchRepository.Search(keyword, hits, offset)
 
 	items := []model.Item{}

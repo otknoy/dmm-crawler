@@ -13,17 +13,17 @@ import (
 )
 
 type Crawler struct {
-	itemSearchService service.ItemSearchService
+	itemSearchService service.ItemService
 }
 
 func NewCrawler() Crawler {
 	apiid := os.Getenv("DMM_API_ID")
 	affid := os.Getenv("DMM_AFFILIATE_ID")
-	dmmSearchRepository := infrastructure.NewDmmSearchRepository(apiid, affid)
+	dmmItemRepository := infrastructure.NewDmmItemRepository(apiid, affid)
 
-	itemSearchService := service.NewItemSearchService(dmmSearchRepository)
+	itemService := service.NewItemService(dmmItemRepository)
 
-	return Crawler{itemSearchService}
+	return Crawler{itemService}
 }
 
 func (c *Crawler) Crawl() {
