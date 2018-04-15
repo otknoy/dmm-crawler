@@ -24,13 +24,7 @@ func (s *itemService) GetItems(keyword string, hits int, offset int) ([]model.It
 
 	items := []model.Item{}
 	for _, dmmItem := range itemResponse.Result.Items {
-		var actresses []string
-		for i, actress := range dmmItem.Iteminfo.Actress {
-			if i != 0 {
-				continue
-			}
-			actresses = append(actresses, actress.Name)
-		}
+		actresses := parseActress(dmmItem)
 
 		var genres []string
 		for _, genre := range dmmItem.Iteminfo.Genre {
@@ -55,4 +49,17 @@ func (s *itemService) GetItems(keyword string, hits int, offset int) ([]model.It
 	}
 
 	return items, nil
+}
+
+func parseActress(dmmItem model.DmmItem) []string {
+	actresses := []string{}
+
+	for i, actress := range dmmItem.Iteminfo.Actress {
+		if i%3 != 0 {
+			continue
+		}
+		actresses = append(actresses, actress.Name)
+	}
+
+	return actresses
 }
