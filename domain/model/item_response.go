@@ -1,4 +1,4 @@
-package dmm
+package model
 
 import "encoding/json"
 
