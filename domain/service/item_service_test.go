@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
 
 	"github.com/otknoy/dmm-crawler/domain/model"
@@ -94,7 +93,6 @@ func TestParseActress(t *testing.T) {
 
 func TestParseGenre(t *testing.T) {
 	expected := parseGenre(dmmItem)
-	fmt.Println(expected)
 	actual := []string{"単体作品", "独占配信"}
 
 	if expected[0] != actual[0] || expected[1] != actual[1] {
