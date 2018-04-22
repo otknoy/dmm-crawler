@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/otknoy/dmm-crawler/infrastructure"
 	"github.com/otknoy/dmm-crawler/model"
 	"github.com/otknoy/dmm-crawler/service"
 )
@@ -26,7 +27,15 @@ func (c *Crawler) Crawl() {
 	items := make(chan model.Item)
 	go c.process(responses, items)
 
-	c.save(items)
+	// c.save(items)
+
+	solr := infrastructure.NewSolrRepository()
+	for item := range items {
+		err := solr.Add(item)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}
 }
 
 func (c *Crawler) fetch(responses chan []model.Item) {
