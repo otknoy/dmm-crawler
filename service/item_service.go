@@ -6,7 +6,7 @@ import (
 )
 
 type ItemService interface {
-	GetItems(keyword string, hits int, offset int) ([]model.Item, error)
+	GetItems(keyword string, hits int, offset int) (model.ItemResponse, error)
 }
 
 type itemService struct {
@@ -19,15 +19,7 @@ func NewItemService(itemSearcher interfaces.ItemSearcher) ItemService {
 	}
 }
 
-func (s *itemService) GetItems(keyword string, hits int, offset int) ([]model.Item, error) {
-	itemResponse, _ := s.itemSearcher.Search(keyword, hits, offset)
-
-	items := []model.Item{}
-	for _, dmmItem := range itemResponse.Result.Items {
-
-		item := process(dmmItem)
-		items = append(items, item)
-	}
-
-	return items, nil
+func (s *itemService) GetItems(keyword string, hits int, offset int) (model.ItemResponse, error) {
+	itemResponse, err := s.itemSearcher.Search(keyword, hits, offset)
+	return itemResponse, err
 }

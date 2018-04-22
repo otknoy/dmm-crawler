@@ -11,13 +11,7 @@ func NewItemProcessService() ItemProcessService {
 	return ItemProcessService{}
 }
 
-func (ips *ItemProcessService) Process(dmmItems <-chan model.DmmItem, items chan<- model.Item) {
-	for dmmItem := range dmmItems {
-		items <- process(dmmItem)
-	}
-}
-
-func process(dmmItem model.DmmItem) model.Item {
+func (ips *ItemProcessService) Process(dmmItem model.DmmItem) model.Item {
 	actresses := parseActress(dmmItem)
 	genres := parseGenre(dmmItem)
 	makers := parseMaker(dmmItem)
