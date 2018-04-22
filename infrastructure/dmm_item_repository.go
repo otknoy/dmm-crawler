@@ -1,4 +1,4 @@
-package repository
+package infrastructure
 
 import (
 	"encoding/json"
@@ -9,18 +9,15 @@ import (
 	"strconv"
 
 	"github.com/otknoy/dmm-crawler/domain/model"
+	"github.com/otknoy/dmm-crawler/domain/repository"
 )
-
-type ItemRepository interface {
-	Search(keyword string, hits int, offset int) (model.ItemResponse, error)
-}
 
 type DmmItemRepository struct {
 	dmmAPIID       string
 	dmmAffiliateID string
 }
 
-func NewDmmItemRepository(dmmAPIID string, dmmAffiliateID string) ItemRepository {
+func NewDmmItemRepository(dmmAPIID string, dmmAffiliateID string) repository.ItemSearcher {
 	r := &DmmItemRepository{
 		dmmAPIID,
 		dmmAffiliateID,

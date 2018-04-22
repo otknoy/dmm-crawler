@@ -10,17 +10,17 @@ type ItemService interface {
 }
 
 type itemService struct {
-	itemSearchRepository repository.ItemRepository
+	itemSearcher repository.ItemSearcher
 }
 
-func NewItemService(itemRepository repository.ItemRepository) ItemService {
+func NewItemService(itemSearcher repository.ItemSearcher) ItemService {
 	return &itemService{
-		itemRepository,
+		itemSearcher,
 	}
 }
 
 func (s *itemService) GetItems(keyword string, hits int, offset int) ([]model.Item, error) {
-	itemResponse, _ := s.itemSearchRepository.Search(keyword, hits, offset)
+	itemResponse, _ := s.itemSearcher.Search(keyword, hits, offset)
 
 	items := []model.Item{}
 	for _, dmmItem := range itemResponse.Result.Items {

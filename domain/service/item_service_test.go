@@ -65,18 +65,18 @@ func createTestData() model.DmmItem {
 
 var dmmItem model.DmmItem = createTestData()
 
-type ItemRepositoryMock struct{}
+type ItemSearcherMock struct{}
 
-func (r *ItemRepositoryMock) Search(keyword string, hits int, offset int) (model.ItemResponse, error) {
+func (r *ItemSearcherMock) Search(keyword string, hits int, offset int) (model.ItemResponse, error) {
 	return model.ItemResponse{}, nil
 }
 
 func TestNewItemService(t *testing.T) {
-	NewItemService(&ItemRepositoryMock{})
+	NewItemService(&ItemSearcherMock{})
 }
 
 func TestGetItems(t *testing.T) {
-	s := NewItemService(&ItemRepositoryMock{})
+	s := NewItemService(&ItemSearcherMock{})
 
 	s.GetItems("keyword", 10, 1)
 }
