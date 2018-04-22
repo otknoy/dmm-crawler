@@ -6,5 +6,6 @@ type ItemSearcher interface {
 	Search(keyword string, hits int, offset int) (model.ItemResponse, error)
 }
 
-type ItemSaver struct {
+type SolrAdder interface {
+	Add(model.Item) error
 }
