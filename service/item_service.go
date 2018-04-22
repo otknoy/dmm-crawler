@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/otknoy/dmm-crawler/domain/model"
-	"github.com/otknoy/dmm-crawler/domain/repository"
+	"github.com/otknoy/dmm-crawler/interfaces"
+	"github.com/otknoy/dmm-crawler/model"
 )
 
 type ItemService interface {
@@ -10,10 +10,10 @@ type ItemService interface {
 }
 
 type itemService struct {
-	itemSearcher repository.ItemSearcher
+	itemSearcher interfaces.ItemSearcher
 }
 
-func NewItemService(itemSearcher repository.ItemSearcher) ItemService {
+func NewItemService(itemSearcher interfaces.ItemSearcher) ItemService {
 	return &itemService{
 		itemSearcher,
 	}

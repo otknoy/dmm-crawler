@@ -8,8 +8,8 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/otknoy/dmm-crawler/domain/model"
-	"github.com/otknoy/dmm-crawler/domain/repository"
+	"github.com/otknoy/dmm-crawler/interfaces"
+	"github.com/otknoy/dmm-crawler/model"
 )
 
 type DmmItemRepository struct {
@@ -17,7 +17,7 @@ type DmmItemRepository struct {
 	dmmAffiliateID string
 }
 
-func NewDmmItemRepository(dmmAPIID string, dmmAffiliateID string) repository.ItemSearcher {
+func NewDmmItemRepository(dmmAPIID string, dmmAffiliateID string) interfaces.ItemSearcher {
 	r := &DmmItemRepository{
 		dmmAPIID,
 		dmmAffiliateID,

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/otknoy/dmm-crawler/domain/model"
+	"github.com/otknoy/dmm-crawler/model"
 )
 
 func createTestData() model.DmmItem {

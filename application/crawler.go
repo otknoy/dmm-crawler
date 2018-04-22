@@ -7,8 +7,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/otknoy/dmm-crawler/domain/model"
-	"github.com/otknoy/dmm-crawler/domain/service"
+	"github.com/otknoy/dmm-crawler/model"
+	"github.com/otknoy/dmm-crawler/service"
 )
 
 type Crawler struct {
