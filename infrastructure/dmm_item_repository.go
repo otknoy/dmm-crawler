@@ -8,17 +8,17 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/otknoy/dmm-crawler/domain/model"
-	"github.com/otknoy/dmm-crawler/domain/repository"
+	"github.com/otknoy/dmm-crawler/interfaces"
+	"github.com/otknoy/dmm-crawler/model"
 )
 
-type DmmSearchRepository struct {
+type DmmItemRepository struct {
 	dmmAPIID       string
 	dmmAffiliateID string
 }
 
-func NewDmmSearchRepository(dmmAPIID string, dmmAffiliateID string) repository.ItemSearchRepository {
-	r := &DmmSearchRepository{
+func NewDmmItemRepository(dmmAPIID string, dmmAffiliateID string) interfaces.ItemSearcher {
+	r := &DmmItemRepository{
 		dmmAPIID,
 		dmmAffiliateID,
 	}
@@ -26,7 +26,7 @@ func NewDmmSearchRepository(dmmAPIID string, dmmAffiliateID string) repository.I
 	return r
 }
 
-func (r *DmmSearchRepository) Search(keyword string, hits int, offset int) (model.ItemResponse, error) {
+func (r *DmmItemRepository) Search(keyword string, hits int, offset int) (model.ItemResponse, error) {
 	u := r.buildURL(keyword, hits, offset)
 	log.Println(u.String())
 
@@ -50,7 +50,7 @@ func (r *DmmSearchRepository) Search(keyword string, hits int, offset int) (mode
 	return response, nil
 }
 
-func (r *DmmSearchRepository) buildURL(keyword string, hits int, offset int) *url.URL {
+func (r *DmmItemRepository) buildURL(keyword string, hits int, offset int) *url.URL {
 	q := url.Values{}
 	q.Add("api_id", r.dmmAPIID)
 	q.Add("affiliate_id", r.dmmAffiliateID)

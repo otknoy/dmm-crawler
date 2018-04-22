@@ -7,23 +7,16 @@ import (
 	"log"
 	"os"
 
-	"github.com/otknoy/dmm-crawler/domain/model"
-	"github.com/otknoy/dmm-crawler/domain/service"
-	"github.com/otknoy/dmm-crawler/infrastructure"
+	"github.com/otknoy/dmm-crawler/model"
+	"github.com/otknoy/dmm-crawler/service"
 )
 
 type Crawler struct {
-	itemSearchService service.ItemSearchService
+	itemSearchService service.ItemService
 }
 
-func NewCrawler() Crawler {
-	apiid := os.Getenv("DMM_API_ID")
-	affid := os.Getenv("DMM_AFFILIATE_ID")
-	dmmSearchRepository := infrastructure.NewDmmSearchRepository(apiid, affid)
-
-	itemSearchService := service.NewItemSearchService(dmmSearchRepository)
-
-	return Crawler{itemSearchService}
+func NewCrawler(itemService service.ItemService) Crawler {
+	return Crawler{itemService}
 }
 
 func (c *Crawler) Crawl() {
