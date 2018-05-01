@@ -5,3 +5,7 @@ import "github.com/otknoy/dmm-crawler/model"
 type ItemSearcher interface {
 	Search(keyword string, hits int, offset int) (model.ItemResponse, error)
 }
+
+type SolrAdder interface {
+	Add(model.Item) error
+}

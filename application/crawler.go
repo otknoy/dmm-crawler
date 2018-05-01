@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/otknoy/dmm-crawler/infrastructure"
 	"github.com/otknoy/dmm-crawler/model"
 	"github.com/otknoy/dmm-crawler/service"
 )
@@ -20,44 +21,56 @@ func NewCrawler(itemService service.ItemService) Crawler {
 }
 
 func (c *Crawler) Crawl() {
-	responses := make(chan []model.Item, 4)
-	go c.fetch(responses)
-
+	responses := make(chan model.ItemResponse, 4)
 	items := make(chan model.Item)
-	go c.process(responses, items)
 
-	c.save(items)
+	go c.fetch(responses)
+	go c.process(responses, items)
+	c.feed(items)
 }
 
-func (c *Crawler) fetch(responses chan []model.Item) {
+func (c *Crawler) fetch(responses chan<- model.ItemResponse) {
 	hits := 100
 	offsetLimit := 50000
 	for offset := 1; offset <= offsetLimit; offset += hits {
-		items, _ := c.itemSearchService.GetItems("", hits, offset)
-		responses <- items
+		res, _ := c.itemSearchService.GetItems("", hits, offset)
+		responses <- res
 	}
 	close(responses)
 }
 
-func (c *Crawler) process(in chan []model.Item, out chan model.Item) {
-	for items := range in {
-		for _, item := range items {
-			out <- item
+func (c *Crawler) process(responses <-chan model.ItemResponse, items chan<- model.Item) {
+	ips := service.NewItemProcessService()
+	for res := range responses {
+		for _, dmmItem := range res.Result.Items {
+			item := ips.Process(dmmItem)
+			items <- item
 		}
 	}
-	close(out)
+	close(items)
 }
 
-func (c *Crawler) save(items chan model.Item) {
+func (c *Crawler) feed(items <-chan model.Item) {
+	solr := infrastructure.NewSolrRepository()
 	for item := range items {
-		bytes, _ := json.Marshal(item)
+		filename := fmt.Sprintf("/mnt/temp/dmm/%s.json", item.ID)
+		save(filename, item)
 
-		outputDir := "/mnt/temp/dmm/"
-		filename := outputDir + fmt.Sprintf("%s.json", item.ID)
-		err := ioutil.WriteFile(filename, bytes, os.ModePerm)
+		err := solr.Add(item)
 		if err != nil {
-			log.Fatalf("failed to write file: %s", filename)
+			log.Fatalln(err)
 		}
-		// log.Printf("success to save file: %s", filename)
 	}
+}
+
+func save(filename string, o interface{}) error {
+	bytes, _ := json.Marshal(o)
+	err := ioutil.WriteFile(filename, bytes, os.ModePerm)
+	if err != nil {
+		log.Fatalf("failed to write file: %s", filename)
+		return err
+	}
+	log.Printf("success to save file: %s", filename)
+
+	return nil
 }
