@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/garyburd/redigo/redis"
 	"github.com/otknoy/dmm-crawler/application"
@@ -30,9 +31,16 @@ func main() {
 
 	go crawler.Crawl(items)
 
+	count := 0
+
 	for item := range items {
 		itemRepository.Insert(item)
 		itemPublisher.Publish(item)
+
+		time.Sleep(10 * time.Millisecond)
+
+		count++
+		log.Println(count)
 	}
 }
 
