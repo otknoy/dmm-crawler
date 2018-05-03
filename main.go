@@ -24,7 +24,7 @@ func main() {
 	itemRepository := infrastructure.NewItemRepository()
 	itemPublisher, err := infrastructure.NewItemPublisher("localhost", 6379)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	items := make(chan model.DmmItem, 4)
