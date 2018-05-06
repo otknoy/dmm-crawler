@@ -25,10 +25,10 @@ func (iss *ItemSaveService) SaveItem(filename string, item model.DmmItem) error 
 	bytes, _ := json.Marshal(item)
 	err := ioutil.WriteFile(filepath, bytes, os.ModePerm)
 	if err != nil {
-		log.Fatalf("failed to write file: %s", filename)
+		log.Fatalf("failed to write file: %s", filepath)
 		return err
 	}
-	log.Printf("success to save file: %s", filename)
+	log.Printf("success to save file: %s", filepath)
 
 	return nil
 }
