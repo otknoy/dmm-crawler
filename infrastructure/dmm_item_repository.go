@@ -27,8 +27,8 @@ func NewDmmItemRepository(dmmAPIID string, dmmAffiliateID string) interfaces.Ite
 	return r
 }
 
-func (r *DmmItemRepository) Search(keyword string, hits int, offset int) (model.ItemResponse, error) {
-	u := r.buildURL(keyword, hits, offset)
+func (r *DmmItemRepository) Search(keyword string, hits int, offset int, sort string) (model.ItemResponse, error) {
+	u := r.buildURL(keyword, hits, offset, sort)
 	log.Println(u.String())
 
 	res, err := http.Get(u.String())
@@ -55,7 +55,7 @@ func (r *DmmItemRepository) Search(keyword string, hits int, offset int) (model.
 	return response, nil
 }
 
-func (r *DmmItemRepository) buildURL(keyword string, hits int, offset int) *url.URL {
+func (r *DmmItemRepository) buildURL(keyword string, hits int, offset int, sort string) *url.URL {
 	q := url.Values{}
 	q.Add("api_id", r.dmmAPIID)
 	q.Add("affiliate_id", r.dmmAffiliateID)
@@ -65,7 +65,7 @@ func (r *DmmItemRepository) buildURL(keyword string, hits int, offset int) *url.
 	q.Add("hits", strconv.Itoa(hits))
 	q.Add("offset", strconv.Itoa(offset))
 	q.Add("keyword", keyword)
-	q.Add("sort", "date")
+	q.Add("sort", sort)
 
 	u := &url.URL{}
 	u.Scheme = "https"

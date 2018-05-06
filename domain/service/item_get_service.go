@@ -13,7 +13,7 @@ func NewItemGetService(is interfaces.ItemSearcher) (interfaces.ItemGetService, e
 	return &ItemGetService{is}, nil
 }
 
-func (igs *ItemGetService) GetItems(keyword string, hits int, offset int, rank string) ([]model.DmmItem, error) {
-	response, err := igs.is.Search(keyword, hits, offset)
+func (igs *ItemGetService) GetItems(keyword string, hits int, offset int, sort string) ([]model.DmmItem, error) {
+	response, err := igs.is.Search(keyword, hits, offset, sort)
 	return response.Result.Items, err
 }
