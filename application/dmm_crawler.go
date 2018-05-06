@@ -19,10 +19,13 @@ func (dc *DmmCrawler) Crawl() error {
 
 	// get items
 	go func() {
-		dmmItems, _ := dc.igs.GetItems("", 100, 1, "date")
-
-		for _, item := range dmmItems {
-			items <- item
+		hits := 100
+		offsetLimit := 50000
+		for offset := 1; offset <= offsetLimit; offset += hits {
+			dmmItems, _ := dc.igs.GetItems("", hits, offset, "date")
+			for _, item := range dmmItems {
+				items <- item
+			}
 		}
 		close(items)
 	}()
