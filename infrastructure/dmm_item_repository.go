@@ -9,8 +9,8 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/otknoy/dmm-crawler/interfaces"
-	"github.com/otknoy/dmm-crawler/model"
+	"github.com/otknoy/dmm-crawler/domain/interfaces"
+	"github.com/otknoy/dmm-crawler/domain/model"
 )
 
 type DmmItemRepository struct {
