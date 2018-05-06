@@ -26,6 +26,16 @@ func (dc *DmmCrawler) Crawl() error {
 			for _, item := range dmmItems {
 				items <- item
 			}
+
+			dmmItems, _ = dc.igs.GetItems("", hits, offset, "rank")
+			for _, item := range dmmItems {
+				items <- item
+			}
+
+			dmmItems, _ = dc.igs.GetItems("", hits, offset, "review")
+			for _, item := range dmmItems {
+				items <- item
+			}
 		}
 		close(items)
 	}()
