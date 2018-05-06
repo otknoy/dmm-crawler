@@ -11,10 +11,13 @@ import (
 func main() {
 	apiid := os.Getenv("DMM_API_ID")
 	affid := os.Getenv("DMM_AFFILIATE_ID")
+	outputDir := os.Getenv("OUTPUT_DIR")
+
 	dmmItemRepository := infrastructure.NewDmmItemRepository(apiid, affid)
+	itemGetService, _ := service.NewItemGetService(dmmItemRepository)
 
-	itemService := service.NewItemService(dmmItemRepository)
+	itemSaveService, _ := service.NewItemSaveService(outputDir)
 
-	crawler := application.NewCrawler(itemService)
-	crawler.Crawl()
+	dmmCrawler, _ := application.NewDmmCrawler(itemGetService, itemSaveService)
+	dmmCrawler.Crawl()
 }

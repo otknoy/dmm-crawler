@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -35,6 +36,10 @@ func (r *DmmItemRepository) Search(keyword string, hits int, offset int) (model.
 		return model.ItemResponse{}, err
 	}
 	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return model.ItemResponse{}, fmt.Errorf("err, http-status-code: %d", res.StatusCode)
+	}
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
