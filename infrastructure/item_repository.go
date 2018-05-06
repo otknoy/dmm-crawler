@@ -8,7 +8,6 @@ import (
 
 	"github.com/otknoy/dmm-crawler/interfaces"
 	"github.com/otknoy/dmm-crawler/model"
-	"gopkg.in/mgo.v2/bson"
 )
 
 type ItemRepository struct {
