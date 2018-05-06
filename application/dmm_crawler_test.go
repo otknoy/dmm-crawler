@@ -3,8 +3,8 @@ package application
 import (
 	"testing"
 
-	"github.com/otknoy/dmm-crawler/interfaces"
-	"github.com/otknoy/dmm-crawler/model"
+	"github.com/otknoy/dmm-crawler/domain/interfaces"
+	"github.com/otknoy/dmm-crawler/domain/model"
 )
 
 type ItemGetServiceMock struct {

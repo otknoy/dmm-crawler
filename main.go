@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/otknoy/dmm-crawler/application"
+	"github.com/otknoy/dmm-crawler/domain/service"
 	"github.com/otknoy/dmm-crawler/infrastructure"
-	"github.com/otknoy/dmm-crawler/service"
 )
 
 func main() {
