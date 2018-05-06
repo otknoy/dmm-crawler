@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/otknoy/dmm-crawler/application"
@@ -19,5 +20,9 @@ func main() {
 	itemSaveService, _ := service.NewItemSaveService(outputDir)
 
 	dmmCrawler, _ := application.NewDmmCrawler(itemGetService, itemSaveService)
-	dmmCrawler.Crawl()
+
+	err := dmmCrawler.Crawl()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
