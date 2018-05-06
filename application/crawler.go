@@ -1,10 +1,7 @@
 package application
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"log"
-	"os"
 	"path/filepath"
 
 	"github.com/otknoy/dmm-crawler/model"
@@ -24,6 +21,7 @@ func (c *Crawler) Crawl(outputDir string) {
 	items := make(chan model.DmmItem, 100)
 
 	go c.fetch(responses)
+
 	go process(responses, items)
 
 	for item := range items {
@@ -53,15 +51,6 @@ func process(responses <-chan model.ItemResponse, items chan<- model.DmmItem) {
 	}
 	close(items)
 }
-
 func save(filename string, o interface{}) error {
-	bytes, _ := json.Marshal(o)
-	err := ioutil.WriteFile(filename, bytes, os.ModePerm)
-	if err != nil {
-		log.Fatalf("failed to write file: %s", filename)
-		return err
-	}
-	log.Printf("success to save file: %s", filename)
 
-	return nil
 }

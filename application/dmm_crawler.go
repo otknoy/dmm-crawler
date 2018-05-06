@@ -19,7 +19,7 @@ func (dc *DmmCrawler) Crawl() error {
 
 	// get items
 	go func() {
-		dmmItems, _ := dc.igs.GetItems("", "date")
+		dmmItems, _ := dc.igs.GetItems("", 100, 1, "date")
 
 		for _, item := range dmmItems {
 			items <- item
