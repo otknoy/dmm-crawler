@@ -1,9 +1,6 @@
 package application
 
 import (
-	"log"
-	"time"
-
 	"github.com/otknoy/dmm-crawler/domain/interfaces"
 	"github.com/otknoy/dmm-crawler/domain/model"
 )
@@ -24,21 +21,21 @@ func (dc *DmmCrawler) Crawl() error {
 	go func() {
 		hits := 100
 		offsetLimit := 10000
-		sortList := []string{"date", "rank", "review"}
-
 		for offset := 1; offset <= offsetLimit; offset += hits {
-			go func() {
-				for _, sort := range sortList {
-					dmmItems, _ := dc.igs.GetItems("", hits, offset, sort)
-					log.Printf("[get]\tget %d items\n", len(dmmItems))
-					for _, item := range dmmItems {
-						log.Printf("[get]\t%s\n", item.ContentID)
-						items <- item
-					}
-				}
-			}()
+			dmmItems, _ := dc.igs.GetItems("", hits, offset, "date")
+			for _, item := range dmmItems {
+				items <- item
+			}
 
-			<-time.NewTicker(1 * time.Second).C
+			dmmItems, _ = dc.igs.GetItems("", hits, offset, "rank")
+			for _, item := range dmmItems {
+				items <- item
+			}
+
+			dmmItems, _ = dc.igs.GetItems("", hits, offset, "review")
+			for _, item := range dmmItems {
+				items <- item
+			}
 		}
 		close(items)
 	}()
