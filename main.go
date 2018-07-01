@@ -15,9 +15,9 @@ func main() {
 	outputDir := os.Getenv("OUTPUT_DIR")
 
 	dmmItemRepository := infrastructure.NewDmmItemRepository(apiid, affid)
-	itemGetService, _ := service.NewItemGetService(dmmItemRepository)
+	itemGetService, _ := service.NewItemGetServiceImpl(dmmItemRepository)
 
-	itemSaveService, _ := service.NewItemSaveService(outputDir)
+	itemSaveService, _ := service.NewItemSaveServiceImpl(outputDir)
 
 	dmmCrawler, _ := application.NewDmmCrawler(itemGetService, itemSaveService)
 

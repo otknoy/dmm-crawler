@@ -1,16 +1,16 @@
 package application
 
 import (
-	"github.com/otknoy/dmm-crawler/domain/interfaces"
 	"github.com/otknoy/dmm-crawler/domain/model"
+	"github.com/otknoy/dmm-crawler/domain/service"
 )
 
 type DmmCrawler struct {
-	igs interfaces.ItemGetService
-	iss interfaces.ItemSaveService
+	igs service.ItemGetService
+	iss service.ItemSaveService
 }
 
-func NewDmmCrawler(igs interfaces.ItemGetService, iss interfaces.ItemSaveService) (DmmCrawler, error) {
+func NewDmmCrawler(igs service.ItemGetService, iss service.ItemSaveService) (DmmCrawler, error) {
 	return DmmCrawler{igs, iss}, nil
 }
 

@@ -1,4 +1,4 @@
-package interfaces
+package service
 
 import "github.com/otknoy/dmm-crawler/domain/model"
 
