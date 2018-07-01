@@ -23,7 +23,7 @@ func (dc *DmmCrawler) Crawl() error {
 	// get items
 	go func() {
 		hits := 100
-		offsetLimit := 50000
+		offsetLimit := 10000
 		sortList := []string{"date", "rank", "review"}
 
 		for offset := 1; offset <= offsetLimit; offset += hits {
