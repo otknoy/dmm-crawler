@@ -7,19 +7,18 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/otknoy/dmm-crawler/domain/interfaces"
 	"github.com/otknoy/dmm-crawler/domain/model"
 )
 
-type ItemSaveService struct {
+type ItemSaveServiceImpl struct {
 	outputDir string
 }
 
-func NewItemSaveService(outputDir string) (interfaces.ItemSaveService, error) {
-	return &ItemSaveService{outputDir}, nil
+func NewItemSaveServiceImpl(outputDir string) (ItemSaveService, error) {
+	return &ItemSaveServiceImpl{outputDir}, nil
 }
 
-func (iss *ItemSaveService) SaveItem(filename string, item model.DmmItem) error {
+func (iss *ItemSaveServiceImpl) SaveItem(filename string, item model.DmmItem) error {
 	filepath := filepath.Join(iss.outputDir, filename)
 
 	bytes, _ := json.Marshal(item)

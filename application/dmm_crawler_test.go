@@ -3,12 +3,12 @@ package application
 import (
 	"testing"
 
-	"github.com/otknoy/dmm-crawler/domain/interfaces"
 	"github.com/otknoy/dmm-crawler/domain/model"
+	"github.com/otknoy/dmm-crawler/domain/service"
 )
 
 type ItemGetServiceMock struct {
-	interfaces.ItemGetService
+	service.ItemGetService
 	GetItemsMock func(keyword string, hits int, offset int, rank string) ([]model.DmmItem, error)
 }
 
@@ -17,7 +17,7 @@ func (igs *ItemGetServiceMock) GetItems(keyword string, hits int, offset int, ra
 }
 
 type ItemSaveServiceMock struct {
-	interfaces.ItemSaveService
+	service.ItemSaveService
 	SaveItemMock func(filename string, item model.DmmItem) error
 }
 
