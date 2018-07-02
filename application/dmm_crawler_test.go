@@ -9,11 +9,11 @@ import (
 
 type ItemGetServiceMock struct {
 	service.ItemGetService
-	GetItemsMock func(keyword string, hits int, offset int, rank string) ([]model.DmmItem, error)
+	GetItemsMock func(request model.CrawlRequest) ([]model.DmmItem, error)
 }
 
-func (igs *ItemGetServiceMock) GetItems(keyword string, hits int, offset int, rank string) ([]model.DmmItem, error) {
-	return igs.GetItemsMock(keyword, hits, offset, rank)
+func (s *ItemGetServiceMock) GetItems(request model.CrawlRequest) ([]model.DmmItem, error) {
+	return s.GetItemsMock(request)
 }
 
 type ItemSaveServiceMock struct {
@@ -38,7 +38,7 @@ func TestNewDmmCrawler(t *testing.T) {
 
 func TestCrawl(t *testing.T) {
 	igsMock := &ItemGetServiceMock{
-		GetItemsMock: func(keyword string, hits int, offset int, rank string) ([]model.DmmItem, error) {
+		GetItemsMock: func(request model.CrawlRequest) ([]model.DmmItem, error) {
 			return []model.DmmItem{
 				model.DmmItem{},
 				model.DmmItem{},

@@ -3,7 +3,7 @@ package service
 import "github.com/otknoy/dmm-crawler/domain/model"
 
 type ItemGetService interface {
-	GetItems(keyword string, hits int, offset int, sort string) ([]model.DmmItem, error)
+	GetItems(request model.CrawlRequest) ([]model.DmmItem, error)
 }
 
 type ItemSaveService interface {
