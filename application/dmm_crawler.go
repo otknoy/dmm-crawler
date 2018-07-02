@@ -19,10 +19,11 @@ func (dc *DmmCrawler) Crawl() error {
 
 	// get items
 	go func() {
-		hits := 100
-		offsetLimit := 10000
-		for offset := 1; offset <= offsetLimit; offset += hits {
-			dmmItems, _ := dc.igs.GetItems("", hits, offset, "date")
+		n := 100
+		pageLimit := 100
+		for page := 1; page <= pageLimit; page += 1 {
+			request := model.NewCrawlRequest("", uint(n), uint(page), "date")
+			dmmItems, _ := dc.igs.GetItems(request)
 			for _, item := range dmmItems {
 				items <- item
 			}
